@@ -204,6 +204,7 @@ private struct MossTaskPanel: View {
     @StateObject private var store = MossTaskStore.shared
     @StateObject private var celebrationController = PanelMossCelebrationController()
     @State private var selectedTab = Tab.active
+    @State private var editingTaskID: UUID?
     @FocusState private var focusedTaskID: UUID?
 
     private let paper = Color(red: 0.97, green: 0.93, blue: 0.84)
@@ -228,7 +229,7 @@ private struct MossTaskPanel: View {
         }
         .padding(6)
         .frame(minWidth: 430, minHeight: 440)
-        .onChange(of: focusedTaskID) { oldTaskID, newTaskID in
+        .onChange(of: editingTaskID) { oldTaskID, newTaskID in
             if let oldTaskID, oldTaskID != newTaskID {
                 store.removeIfBlank(oldTaskID)
             }
@@ -285,6 +286,9 @@ private struct MossTaskPanel: View {
 
     private func tabButton(_ title: String, tab: Tab, count: Int) -> some View {
         Button {
+            if tab != .active {
+                finishEditing()
+            }
             store.purgeExpiredTasks()
             selectedTab = tab
         } label: {
@@ -312,7 +316,7 @@ private struct MossTaskPanel: View {
                         }
                     }
                     .scrollIndicators(.visible)
-                    .onChange(of: focusedTaskID) { _, taskID in
+                    .onChange(of: editingTaskID) { _, taskID in
                         guard let taskID else { return }
                         withAnimation(.easeOut(duration: 0.18)) {
                             proxy.scrollTo(taskID, anchor: .top)
@@ -348,15 +352,17 @@ private struct MossTaskPanel: View {
             .help("Complete and archive this quest")
 
             Group {
-                if focusedTaskID == task.id {
+                if editingTaskID == task.id {
                     TextField("NEW QUEST", text: store.binding(for: task.id))
                         .textFieldStyle(.plain)
                         .font(pixelFont(size: 16))
                         .foregroundStyle(cocoa)
                         .focused($focusedTaskID, equals: task.id)
+                        .onAppear {
+                            focusEditor(for: task.id)
+                        }
                         .onSubmit {
-                            store.removeIfBlank(task.id)
-                            focusedTaskID = nil
+                            finishEditing(task.id)
                         }
                 } else {
                     HoverMarqueeText(
@@ -365,7 +371,7 @@ private struct MossTaskPanel: View {
                     )
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        focusedTaskID = task.id
+                        beginEditing(task.id)
                     }
                 }
             }
@@ -458,9 +464,7 @@ private struct MossTaskPanel: View {
         Button {
             selectedTab = .active
             let taskID = store.addTask()
-            DispatchQueue.main.async {
-                focusedTaskID = taskID
-            }
+            beginEditing(taskID)
         } label: {
             HStack(spacing: 8) {
                 Text("+")
@@ -476,6 +480,27 @@ private struct MossTaskPanel: View {
         .buttonStyle(.plain)
         .disabled(store.activeTasks.count >= 50)
         .opacity(store.activeTasks.count >= 50 ? 0.55 : 1)
+    }
+
+    private func beginEditing(_ taskID: UUID) {
+        editingTaskID = taskID
+        focusEditor(for: taskID)
+    }
+
+    private func focusEditor(for taskID: UUID) {
+        DispatchQueue.main.async {
+            guard editingTaskID == taskID else { return }
+            focusedTaskID = taskID
+        }
+    }
+
+    private func finishEditing(_ taskID: UUID? = nil) {
+        let taskID = taskID ?? editingTaskID
+        focusedTaskID = nil
+        editingTaskID = nil
+        if let taskID {
+            store.removeIfBlank(taskID)
+        }
     }
 
     private var panelBackground: some View {
