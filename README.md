@@ -1,6 +1,7 @@
 # Moss
+<img src="assets/branding/moss-readme-transparent-v2.png" alt="Moss" width="320">
 
-Moss is a native macOS desktop-pet starter app. He wanders randomly around the screen, turns inward when he reaches a screen edge, plays the preserved reminder animation when clicked, and conjures a softly floating small checklist. Clicking the small checklist expands it into a real interactive task panel.
+Gamify your todo list! I created moss because I was losing track of my todos, and the notes app just wasn't cutting it... I don't particularly enjoy the UI of apple's reminder's app, but my sister uses it, so when creating moss, I thought it would be practical to link them together. 
 
 ## Run
 
@@ -27,21 +28,12 @@ open dist/release/Moss.app
 
 The release build also writes `dist/release/Moss.dSYM` for crash diagnosis.
 
-## Versioning and bundle metadata
-
-App identity and version values are centralized in `Config/AppMetadata.sh`.
-Update `MOSS_MARKETING_VERSION` for a user-visible release and increment
-`MOSS_BUILD_NUMBER` for every distributed build. Both development and universal
-release bundles use the same metadata and app icon.
-
 ## Controls
 
-- Click Moss quickly to play the reminder animation.
-- Once the small checklist appears, click Moss or the checklist to expand the full task panel. If untouched, it disappears after 2.7 seconds and Moss resumes walking.
-- Press and drag Moss to pick him up by his cloak, move him, and drop him with a soft squash.
-- Click the small conjured checklist to open the interactive list.
-- Drag Moss to reposition him.
-- Right-click Moss to replay the reminder or quit.
+- Click Moss once and he will conjure up a to do list!
+- Click Moss twice and the to do list will expand into your linked apple reminders list
+- If Moss is getting in the way, you can drag and drop him
+- Moss will fall asleep if you don't interact with him for a bit!
 
 ## Project layout
 
@@ -57,5 +49,3 @@ release bundles use the same metadata and app icon.
 - `PetView.swift` handles sprite animation and interaction.
 - `PetWindowController.swift` handles the floating transparent desktop window and wandering behavior.
 - `TaskPanelWindowController.swift` provides the expanding interactive task panel.
-
-The starter now uses a dedicated four-frame walk cycle. A later production pass can add equally aligned sleep and delighted animation strips without changing the window or task-panel architecture.
