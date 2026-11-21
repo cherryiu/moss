@@ -1,7 +1,19 @@
-# Moss
-<img src="assets/branding/moss-readme-transparent-v2.png" alt="Moss" width="320">
+# meet moss :)
+<p align="center">
+  <img src="assets/branding/moss-readme-transparent-v2.png" alt="Moss" width="32%">
+  <img src="assets/branding/moss-readme-sleeping.png" alt="Moss sleeping" width="32%">
+</p>
 
-Gamify your todo list! I created moss because I was losing track of my todos, and the notes app just wasn't cutting it... I don't particularly enjoy the UI of apple's reminder's app, but my sister uses it, so when creating moss, I thought it would be practical to link them together. 
+gamify your todo list! I created moss because I was losing track of my todos, and the notes app just wasn't cutting it... I don't particularly enjoy the UI of apple's reminder's app, but my sister uses it, so when creating moss, I thought it would be practical to link them together. 
+
+<p align="center">
+  <img src="assets/screenshots/basic%20view.png" alt="Moss basic view" width="32%">
+  <img src="assets/screenshots/archive%20view.png" alt="Archived quests" width="32%">
+  <img src="assets/screenshots/sleeping%20view.png" alt="Moss sleeping" width="32%">
+</p>
+<img src="assets/screenshots/peeking%20view.png" alt="Moss peeking" width="50%">
+<img src="assets/screenshots/on%20weather.png" alt="Moss over Weather" width="50%">
+
 
 ## Run
 
